@@ -18,7 +18,7 @@ brew tap FelixKratz/formulae
 echo "Installing Brew Formulae"
 ### Terminal
 brew install neovim
-brew install starship
+# brew install starship
 brew install zsh-autosuggestions
 brew install zsh-syntax-hightlighting
 
@@ -36,6 +36,11 @@ brew install --cask brave-browser
 brew install --cask sf-symbols
 brew install --cask font-fira-code
 brew install --cask font-hack-nerd-font
+
+# Copying and checking configuration files
+echo "Download and checkout configuration files"
+[ ! -d "$HOME/dotfile"] && git clone --bare --branch macos --single-branch git@github.com:Cosmeak/dotfiles.git
+git --git-dir=$HOME/dotfile/ --work-tree=$HOME/.config/ checkout macos
 
 # Start services
 echo "Starting services..."
