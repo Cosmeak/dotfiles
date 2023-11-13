@@ -27,10 +27,12 @@ brew install btop
 
 ## Cask
 echo "Installing Brew Cask"
-brew install --cash kitty
-brew install --cask spotify
+brew install --cash kitty # terminal
+brew install --cask spotify 
 brew install --cask discord
 brew install --cask brave-browser
+brew install --cask amethyst # Window Manager
+brew install --cask aldente # Battery Manager - For Macbook
 
 ### Fonts
 brew install --cask sf-symbols
