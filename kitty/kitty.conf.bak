@@ -1,0 +1,7 @@
+# BEGIN_KITTY_THEME
+# Catppuccin-Macchiato
+include current-theme.conf
+# END_KITTY_THEME
+
+tab_bar_edge top
+background_opacity .9
