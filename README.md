@@ -35,7 +35,7 @@ This repository want this to be multi-user and multi-host so there is some worka
 | :----------- | :-------------------------------- | :------------------- | :---------------- | :--: | :-: | :------: | :----: |
 |  `hydrogen`  | ASUS ROG STRIX B760-I GAMING WIFI | Intel i5 13600kf     | Nvidia 4070ti     | 32Go | ❄️  | 🎮️      | 🟢️     |
 |  `helium`    | -                                 | Apple M2 Pro         | Apple M2 Pro      | 32Go | 🍎️  | ⌨️      | 🟢️     |
-|  `lithium`   | Raspberry Pi4 b+                  | -                    | -                 | 1Go  | ❄️  | 🧨️      | 🟠     |
+|  `lithium`   | Raspberry Pi3 b+                  | -                    | -                 | 1Go  | ❄️  | 🧨️      | 🟠     |
 |  `beryllium` | WSL                               | -                    | -                 | 8Go  | ❄️  | ⌨️      | 🟢️     |
 |  `boron`     | Aorus B450 Elite                  | AMD Ryzen 3 3300X    | Nvidia 1060       | 16Go | ❄️  | 🎮️ / ⌨️ | 🔴     |
 |  `carbon`    | HP ProDesk 400 G1 DM              | Intel Pentium G3250T | -                 | 8Go  | ❄️  | 💾️      | 🔴     |

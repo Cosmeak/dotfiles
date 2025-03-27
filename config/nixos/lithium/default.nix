@@ -1,61 +1,80 @@
-{ self, inputs, pkgs, hostname, ... }:
+{ config, pkgs, inputs, lib, hostname,... }:
 {
-  # Force update to the last linux kernel avalaible
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  imports = [
+    # Raspberry Pi 3 hardware module
+    inputs.hardware.nixosModules.raspberry-pi-3
+  ];
 
-  # Special hardware config for raspberry
-  hardware = {
-    raspberry-pi."4".apply-overlays-dtmerge.enable = true;
-    raspberry-pi."4".fkms-3d.enable = true; # Enable hardware acceleration
-    deviceTree = {
+  # Disable some modules
+  disabledModules = [ "profiles/base.nix" ];
+
+  # Used to build image/version
+  nixpkgs.hostPlatform.system = "aarch64-linux";
+
+  # Allow licensed firmware to be update
+  hardware.enableRedistributableFirmware = true;
+
+  # Early boot
+  boot.initrd.kernelModules = [ "vc4" "bcm2835_dma" "i2c_bcm2835" ];
+
+  # Network
+  networking.hostName = hostname;
+
+  # Time
+  time.timeZone = "Europe/Paris";
+
+  # Enable ssh
+  services.openssh.enable = true;
+
+
+  # Auto login to magnetis user on startup
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "magnetis";
+  services.getty.autologinUser = "magnetis";
+
+  # Environment wide packages
+  environment.systemPackages = with pkgs; [
+    libraspberrypi
+    git
+  ];
+
+  # Configure users
+  users.mutableUsers = true;
+  users.users.cosmeak = {
+    isNormalUser = true;
+    extraGroups = [ "networkmanager" "wheel" ]; # wheel = admin
+  };
+
+  # Nix settings
+  nix.settings.experimental-features = "nix-command flakes";
+
+  # Perform garbage collection weekly to maintain low disk usage
+  gems.system.garbageCollector.enable = true;
+  gems.system.autoUpdate.enable = false;
+
+  # Optimize storage
+  nix.settings.auto-optimise-store = true;
+
+  # Minecraft Server
+  services.minecraft-server = {
     enable = true;
-    filter = "*rpi-4-*.dtb";
+    eula = true;
+    openFirewall = true; # Opens the port the server is running on (by default 25565)
+    declarative = true;
+    serverProperties = {
+      difficulty = 3;
+      gamemode = 1;
+      max-players = 5;
+      motd = "NixOS Minecraft server!";
+      white-list = false;
     };
   };
 
-  # Networking configuration
-  # networking.networkmanager.enable = true;
-  networking.hostName = hostname;
-  networking.interfaces."wlan0".useDHCP = true;
-  networking.wireless = {
-    enable = true;
-    interfaces = [ "wlan0" ];
-  };
-
-  users.users."rpi" = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    hashedPassword = "$y$j9T$rg0syrPPtjaLILPTTplI3/$5uykqP9tXjAsvOocbfosUeN6j6dMrHRUtwudKd4QaA5"; # password generated with `mkpasswd` command
-
-    # User wide packages
-    packages = [];
-  };
-
-  # System wide packages
-  environment.systemPackages = with pkgs; [
-    libraspberrypi
-    raspberrypi-eeprom
-  ];
-
-  # Garbage collector
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
-
-  nix.settings = {
-    auto-optimise-store = true; # Related to garbage collector
-    experimental-features = "nix-command flakes"; # Enable flakes
-  };
-
-  # "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix" creates a
-  # disk with this label on first boot. Therefore, we need to keep it. It is the
-  # only information from the installer image that we need to keep persistent
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/NIXOS_SD";
-    fsType = "ext4";
-  };
+  # Swap file
+  swapDevices = [{
+    device = "/swapfile";
+    size = 1024; # 1GB
+  }];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -63,6 +82,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.11"; # Did you read the comment?
 }

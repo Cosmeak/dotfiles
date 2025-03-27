@@ -11,5 +11,6 @@
     "font-hack-nerd-font" # move this to nix installation
     "1password"
     "discord" # use this one since nixpkgs doesn't have krisp
+    "modrinth"
   ];
 }
