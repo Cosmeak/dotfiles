@@ -50,7 +50,6 @@ This repository want this to be multi-user and multi-host so there is some worka
 - ⌨️ : Coding
 - 🧨️ : Testing purpose
 - 🎭️ : Dual Boot
-
 - ❄️ : NixOS
 - 🍎️ : MacOS
 - 👹️ : FreeBSD with [NixBSD](https://github.com/nixos-bsd/nixbsd)

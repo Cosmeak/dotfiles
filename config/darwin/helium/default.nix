@@ -25,11 +25,11 @@
     just
     firefox
     spotify
-    discord
     # _1password-gui
     zed-editor
     vscodium # used for jupyter notebook because not available in zed at this time
     stats # System monitoring displayed in macos top bar - will be replaced by custom script with sketchybar
+    raycast # replacement for spotlight
   ];
 
   # Common system configurations
