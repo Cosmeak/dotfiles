@@ -1,0 +1,25 @@
+name: Update flake dependencies
+
+on:
+  workflow_dispatch: # allows manual triggering
+  schedule: # Once every month
+    - cron: "0 0 1 * *"
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    environment: update
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@v24
+        id: update
+        with:
+          commit-msg: "chore(flake): bump inputs"
+          pr-title: "chore(flake): bump inputs"
+      - run: "gh pr merge --auto --rebase --delete-branch ${{ steps.update.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
